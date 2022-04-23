@@ -15,6 +15,8 @@ namespace ControleCar.Data
         {
         }
 
-        public DbSet<ControleCar.Models.usuario> usuario { get; set; }
+        public DbSet<usuario> usuario { get; set; }
+
+        public DbSet<cliente> cliente { get; set; }
     }
 }

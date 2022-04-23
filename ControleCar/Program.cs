@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ControleCar.Data;
+using ControleCar.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ControleCarContext>(options =>
@@ -8,7 +9,7 @@ builder.Services.AddDbContext<ControleCarContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<clienteService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
