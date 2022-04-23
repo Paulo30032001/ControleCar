@@ -1,4 +1,10 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ControleCar.Data;
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ControleCarContext>(options =>
+    options.UseMySQL(builder.Configuration.GetConnectionString("ControleCarContext")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +28,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=index}/{id?}");
 
 app.Run();

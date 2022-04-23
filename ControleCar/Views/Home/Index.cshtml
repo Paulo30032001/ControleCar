@@ -2,7 +2,93 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+
+	<!-- paginas -->
+		<div class="main" id="pagina">
+		    
+		    <div class="container container-xl">
+
+		    	<div class="row">
+		    		<div class="col">
+						
+						<form>
+							<div class="form-group row">
+								<label class="col-md-6 col-form-label text-center">Dados:</label>
+								<div class="col-md-6 text-center ">
+									<select id="competencia" class="form-select w-50 text-right">
+										<option value="">-- Selecione </option>
+										<option value="2018-08">Agosto / 2018</option>
+										<option value="2018-09">Setembro / 2018</option>
+										<option value="2018-10">Outubro / 2018</option>
+									</select>
+								</div>
+							</div>
+						</form>
+
+						<hr />
+
+		    		</div>
+		    	</div>
+		    	
+		    	<div class="row mb-3 text-center">
+		    		<div class="col-md-6 ">
+		    			<div class="card bg-warning text-white">
+							<div class="card-header">
+								Número de vendas
+							</div>
+							<div class="card-body">
+								 <h5 id="numeroVendas" class="card-title">?</h5>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+		    			<div class="card">
+							<div class="card-header">
+								Total de vendas
+							</div>
+							<div class="card-body">
+								 <h5 id="totalVendas" class="card-title">?</h5>
+							</div>
+						</div>
+		    		</div>
+
+				</div>
+
+				<div class="row mb-3 text-center">
+					<div class="col-md-6">
+		    			<div class="card bg-success text-white">
+							<div class="card-header">
+								Clientes ativos
+							</div>
+							<div class="card-body">
+								 <h5 id="clientes_ativos" class="card-title">?</h5>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 ">
+		    			<div class="card bg-danger text-white">
+							<div class="card-header">
+								Clientes inativos
+							</div>
+							<div class="card-body">
+								 <h5 id="clientes_inativos" class="card-title">?</h5>
+							</div>
+						</div>
+		    		</div>
+		    	</div>
+
+		   
+				
+
+
+		    	</div>
+
+		    
+		    </div>
+
+		</div>
+

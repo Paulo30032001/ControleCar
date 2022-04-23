@@ -1,0 +1,176 @@
+﻿@model IEnumerable<ControleCar.Models.usuario>
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<div class="container-xl">
+    <div class="row row-deck row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    
+                        <a class="btn btn-success" asp-action="create">Novo</a>
+                    
+                </div> <!--Fecha cabeçalho do card-->
+                <div class="table-responsive">
+                    <table id="tabela" class="table table table-vcenter flex-lg-nowrap datatable table-dark">
+                        <thead>
+
+                        <th>
+                                @Html.DisplayNameFor(Model=>Model.id)
+                        </th>
+                        <th>
+                                @Html.DisplayNameFor(Model=>Model.nome)
+                        </th>
+                        <th>
+                                @Html.DisplayNameFor(Model=>Model.email)
+                        </th>
+                        <th>
+                                @Html.DisplayNameFor(Model=>Model.ativo)
+
+                        </th>
+                    
+                      
+                        <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @Html.DisplayFor(ModelItem=>item.id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(ModelItem=>item.nome)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(ModelItem=>item.email)
+
+                                    </td>
+                                    <td class>
+                                        @Html.DisplayFor(ModelItem=>item.ativo)
+                                    </td>
+                                 
+
+                                    <td class="text-end">
+
+                                        <a class="btn btn-primary p-1 mr-5" asp-action="edit" asp-route-id=@item.id>
+                                            <i class="fas fa-edit "></i>
+                                        </a>
+
+                                        <a href="#!" class="btn btn-danger p-1" onclick="excluir(@item.id)">
+                                            <i class="fas fa-trash-alt "></i>
+                                        </a>
+
+
+
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div> <!--Fecha div table responsive-->
+            </div> <!--Fecha card-->
+        </div>
+
+
+    </div> <!--Fecha row que Engolba tudo -->
+
+
+</div> <!--Fecha container extra large-->
+
+
+
+
+
+@section scripts{
+<script>
+    $(document).ready(function(){
+        $('#tabela').DataTable({
+            columnDefs: [{
+                'targets': [-1],
+                'orderable': false
+            }],
+            stateSave: false,
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_ resultados por página",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+        });
+    });
+
+    function excluir(id){
+		Swal.fire({
+          title: 'Atenção',
+          text: "Confirma a exclusão do registro?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#666',
+          confirmButtonText: 'Sim, excluir!',
+          cancelButtonText: 'Cancelar',
+        }).then((result) => {
+
+          if (result.isConfirmed) {
+            
+              $.ajax({
+                  dataType: "json",
+                  method: "POST",
+                  url: '@Url.Action("Delete")/' + id.toString()
+              })
+              .done((result) => {
+                  if(result.ok){
+                      window.location.reload();
+                  }
+                  else{
+                      Swal.fire(
+                        'Ops!',
+                        'Este registro não pode ser excluído porque possui informações relacionadas.',
+                        'danger'
+                      );
+                  }
+              })
+              .fail((result) => {
+                  console.log("ERRO");
+                  console.log(result);
+                  Swal.fire(
+                    'Ops!',
+                    'Ocorreu um erro na requisição.',
+                    'danger'
+                  );
+              });
+
+
+          }
+        });
+	}
+
+
+</script>
+}

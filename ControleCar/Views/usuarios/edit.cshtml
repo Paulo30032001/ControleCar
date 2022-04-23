@@ -1,0 +1,47 @@
+﻿@model ControleCar.Models.usuario
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>usuario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="edit">
+          
+            <input type="hidden" asp-for="id" />
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <input required asp-for="email" class="form-control" />
+               
+            </div>
+            <div class="form-group">
+                <label asp-for="senha" class="control-label"></label>
+                <input required type="password" asp-for="senha" class="form-control" />
+                      </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input required class="form-check-input" asp-for="ativo" /> @Html.DisplayNameFor(model => model.ativo)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="nome" class="control-label"></label>
+                <input required asp-for="nome" class="form-control" />
+          
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar</a>
+</div>
+
+@section Scripts {
+ }

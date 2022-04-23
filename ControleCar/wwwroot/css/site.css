@@ -16,3 +16,132 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.container-tight {
+    width: 100%;
+    padding-right: var(--tblr-gutter-x, 1.5rem);
+    padding-left: var(--tblr-gutter-x, 1.5rem);
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 30rem;
+   
+}
+
+.back {
+    background: rgba(255,255,255,0.1);
+}
+
+
+
+
+
+.antialiased {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.subpixel-antialiased {
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}
+
+.table-responsive {
+    min-height: 300px;
+}
+
+.dropdown-menu-custom {
+    margin: 0 100% 0 0 !important;
+}
+
+.theme-dark .dataTables_length label {
+    color: #fff;
+}
+
+.theme-dark .dataTables_filter label {
+    color: #fff;
+}
+
+.theme-dark .dataTables_paginate a {
+    color: #fff;
+    border-color: #2c3c56;
+}
+
+    .theme-dark .dataTables_paginate a:hover {
+        background-color: #1c7773;
+    }
+
+.theme-dark .dataTables_filter input {
+    background-color: #1b2434;
+    color: #fafbfc;
+    border-color: #2c3c56;
+}
+
+.theme-dark .dataTables_length select {
+    background-color: #1b2434;
+    color: #fafbfc;
+    border-color: #2c3c56;
+}
+
+.dataTables_length {
+    width: 45%;
+    float: left;
+    padding: 1rem 0 1rem 0;
+}
+
+.dataTables_filter {
+    width: 45%;
+    float: right;
+    padding: 1rem 0 1rem 0;
+}
+
+.dataTables_info {
+    width: 45%;
+    float: left;
+    padding: 1rem 0 1rem 0;
+    margin-left: 1rem;
+}
+
+.dataTables_paginate {
+    width: 45%;
+    float: right;
+    padding: 1rem 0 1rem 0;
+    padding-right: 1rem;
+}
+
+    .dataTables_paginate a {
+        cursor: pointer;
+        border: solid 1px #ccc;
+        border-radius: 4px;
+        padding: 5px;
+        margin-left: 3px;
+        margin-right: 3px;
+        text-decoration: none;
+        color: #333;
+    }
+
+        .dataTables_paginate a:hover {
+            background-color: #e0e0e0;
+        }
+
+.dataTables_filter label {
+    color: #666;
+}
+
+.dataTables_filter input {
+    margin-right: 1rem;
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    padding: 5px 5px;
+}
+
+.dataTables_length label {
+    color: #666;
+}
+
+.dataTables_length select {
+    margin-left: 1rem;
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    padding: 5px 5px;
+}
