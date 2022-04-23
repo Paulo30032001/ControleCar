@@ -18,5 +18,7 @@ namespace ControleCar.Data
         public DbSet<usuario> usuario { get; set; }
 
         public DbSet<cliente> cliente { get; set; }
+
+        public DbSet<formas_pagamento> formas_pagamento { get; set; }
     }
 }

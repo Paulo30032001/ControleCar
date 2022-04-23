@@ -10,6 +10,7 @@ builder.Services.AddDbContext<ControleCarContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<clienteService>();
+builder.Services.AddScoped<formas_pagamentoService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
