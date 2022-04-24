@@ -11,6 +11,10 @@ builder.Services.AddDbContext<ControleCarContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<clienteService>();
 builder.Services.AddScoped<formas_pagamentoService>();
+builder.Services.AddScoped<pecas_departamentosService>();
+builder.Services.AddScoped<vendedorService>();
+builder.Services.AddScoped<pecasService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

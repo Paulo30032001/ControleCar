@@ -1,27 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ControleCar.Services;
 using ControleCar.Models;
+using ControleCar.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Diagnostics;
 
 namespace ControleCar.Controllers
 {
-    public class formas_pagamentoController : Controller
+    public class vendedorController : Controller
     {
-        private readonly formas_pagamentoService service;
+        private readonly vendedorService service;
 
-        public formas_pagamentoController(formas_pagamentoService service)
+        public vendedorController(vendedorService service)
         {
             this.service = service;
         }
 
 
 
+
         public async Task<IActionResult> index()
         {
 
-            var formas_pagamento = await service.FindAllAsync();
+            var vendedor = await service.FindAllAsync();
 
-            return View(formas_pagamento);
+            return View(vendedor);
         }
 
 
@@ -32,13 +35,13 @@ namespace ControleCar.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> create(formas_pagamento formas_pagamento)
+        public async Task<IActionResult> create(vendedor vendedor)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            await service.InsertAsync(formas_pagamento);
+            await service.InsertAsync(vendedor);
             return RedirectToAction(nameof(index));
         }
 
@@ -50,31 +53,31 @@ namespace ControleCar.Controllers
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
 
-            var formas_pagamento = await service.FindByIdAsync(id.Value);
-            if (formas_pagamento == null)
+            var vendedor = await service.FindByIdAsync(id.Value);
+            if (vendedor == null)
             {
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
-            return View(formas_pagamento);
+            return View(vendedor);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> edit(int id, formas_pagamento formas_pagamento)
+        public async Task<IActionResult> edit(int id, vendedor vendedor)
         {
             if (!ModelState.IsValid)
             {
                 var x = await service.FindByIdAsync(id);
                 return View(x);
             }
-            if (id != formas_pagamento.id)
+            if (id != vendedor.id)
             {
                 return RedirectToAction(nameof(Error), new { Message = "o Id forncecido não é valido" });
             }
             try
             {
-                await service.UpdateAsync(formas_pagamento);
+                await service.UpdateAsync(vendedor);
                 return RedirectToAction(nameof(index));
             }
             catch (Exception e)
@@ -96,9 +99,9 @@ namespace ControleCar.Controllers
                 return Json(new { ok = false });
             }
 
-            var formas_pagamento = await service.FindByIdAsync(id.Value);
+            var vendedor = await service.FindByIdAsync(id.Value);
 
-            if (formas_pagamento == null)
+            if (vendedor == null)
             {
                 return Json(new { ok = false });
             }

@@ -1,7 +1,8 @@
-﻿@model formas_pagamento;
+﻿@model pecas_departamentos;
 @{
-    ViewData["Title"] = "Editar Forma de Pagamento";
+    ViewData["Title"] = "Editar Departamento";
 }
+
 
 
 
@@ -14,8 +15,8 @@
         <form id="form" asp-action="edit">
 
             <div class="form-group">
-                <label asp-for="forma_pag" class="control-label"></label>
-                <input required asp-for="forma_pag" class="form-control" />
+                <label asp-for="nome" class="control-label"></label>
+                <input required asp-for="nome" class="form-control" />
 
             </div>
            

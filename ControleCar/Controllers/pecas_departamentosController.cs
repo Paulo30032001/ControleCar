@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ControleCar.Services;
 using ControleCar.Models;
+using ControleCar.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Diagnostics;
 
 namespace ControleCar.Controllers
 {
-    public class formas_pagamentoController : Controller
+    public class pecas_departamentosController : Controller
     {
-        private readonly formas_pagamentoService service;
+        private readonly pecas_departamentosService service;
 
-        public formas_pagamentoController(formas_pagamentoService service)
+        public pecas_departamentosController(pecas_departamentosService service)
         {
             this.service = service;
         }
@@ -19,9 +21,9 @@ namespace ControleCar.Controllers
         public async Task<IActionResult> index()
         {
 
-            var formas_pagamento = await service.FindAllAsync();
+            var pecas_departamentos = await service.FindAllAsync();
 
-            return View(formas_pagamento);
+            return View(pecas_departamentos);
         }
 
 
@@ -32,13 +34,13 @@ namespace ControleCar.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> create(formas_pagamento formas_pagamento)
+        public async Task<IActionResult> create(pecas_departamentos pecas_departamentos)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            await service.InsertAsync(formas_pagamento);
+            await service.InsertAsync(pecas_departamentos);
             return RedirectToAction(nameof(index));
         }
 
@@ -50,31 +52,31 @@ namespace ControleCar.Controllers
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
 
-            var formas_pagamento = await service.FindByIdAsync(id.Value);
-            if (formas_pagamento == null)
+            var pecas_departamentos = await service.FindByIdAsync(id.Value);
+            if (pecas_departamentos == null)
             {
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
-            return View(formas_pagamento);
+            return View(pecas_departamentos);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> edit(int id, formas_pagamento formas_pagamento)
+        public async Task<IActionResult> edit(int id, pecas_departamentos pecas_departamentos)
         {
             if (!ModelState.IsValid)
             {
                 var x = await service.FindByIdAsync(id);
                 return View(x);
             }
-            if (id != formas_pagamento.id)
+            if (id != pecas_departamentos.id)
             {
                 return RedirectToAction(nameof(Error), new { Message = "o Id forncecido não é valido" });
             }
             try
             {
-                await service.UpdateAsync(formas_pagamento);
+                await service.UpdateAsync(pecas_departamentos);
                 return RedirectToAction(nameof(index));
             }
             catch (Exception e)
@@ -96,9 +98,9 @@ namespace ControleCar.Controllers
                 return Json(new { ok = false });
             }
 
-            var formas_pagamento = await service.FindByIdAsync(id.Value);
+            var pecas_departamentos = await service.FindByIdAsync(id.Value);
 
-            if (formas_pagamento == null)
+            if (pecas_departamentos == null)
             {
                 return Json(new { ok = false });
             }
@@ -125,9 +127,6 @@ namespace ControleCar.Controllers
             };
             return View(viewModel);
         }
-
-
-
 
 
 

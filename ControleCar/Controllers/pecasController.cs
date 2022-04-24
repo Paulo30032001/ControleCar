@@ -1,44 +1,54 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ControleCar.Services;
 using ControleCar.Models;
+using ControleCar.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Diagnostics;
-
+using ControleCar.Models.ViewModels;
 namespace ControleCar.Controllers
 {
-    public class formas_pagamentoController : Controller
+    public class pecasController : Controller
     {
-        private readonly formas_pagamentoService service;
+        private readonly pecasService service;
 
-        public formas_pagamentoController(formas_pagamentoService service)
+        private readonly pecas_departamentosService departamentos_service;
+
+        public pecasController(pecasService service, pecas_departamentosService departamentos_service)
         {
             this.service = service;
+            this.departamentos_service = departamentos_service;
         }
-
-
 
         public async Task<IActionResult> index()
         {
 
-            var formas_pagamento = await service.FindAllAsync();
+            var pecas = await service.FindAllAsync();
 
-            return View(formas_pagamento);
+            return View(pecas);
         }
 
 
         public async Task<IActionResult> create()
         {
-            return View();
+            var departamentos = await departamentos_service.FindAllAsync();
+
+            var ViewModels= new pecasFormViewModel() { departamentos=departamentos };
+
+            return View(ViewModels);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> create(formas_pagamento formas_pagamento)
+        public async Task<IActionResult> create(pecas pecas)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                var departamentos = await departamentos_service.FindAllAsync();
+
+                var ViewModels = new pecasFormViewModel() { departamentos = departamentos };
+                return View(ViewModels);
             }
-            await service.InsertAsync(formas_pagamento);
+            await service.InsertAsync(pecas);
             return RedirectToAction(nameof(index));
         }
 
@@ -50,31 +60,39 @@ namespace ControleCar.Controllers
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
 
-            var formas_pagamento = await service.FindByIdAsync(id.Value);
-            if (formas_pagamento == null)
+            var pecas = await service.FindByIdAsync(id.Value);
+            if (pecas == null)
             {
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
-            return View(formas_pagamento);
+
+            var departamentos = await departamentos_service.FindAllAsync();
+
+            var ViewModels = new pecasFormViewModel() { departamentos = departamentos,pecas=pecas };
+
+            return View(ViewModels);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> edit(int id, formas_pagamento formas_pagamento)
+        public async Task<IActionResult> edit(int id, pecas pecas)
         {
             if (!ModelState.IsValid)
             {
                 var x = await service.FindByIdAsync(id);
-                return View(x);
+                var departamentos = await departamentos_service.FindAllAsync();
+
+                var ViewModels = new pecasFormViewModel() { departamentos = departamentos,pecas=x };
+                return View(ViewModels);
             }
-            if (id != formas_pagamento.id)
+            if (id != pecas.id)
             {
                 return RedirectToAction(nameof(Error), new { Message = "o Id forncecido não é valido" });
             }
             try
             {
-                await service.UpdateAsync(formas_pagamento);
+                await service.UpdateAsync(pecas);
                 return RedirectToAction(nameof(index));
             }
             catch (Exception e)
@@ -96,9 +114,9 @@ namespace ControleCar.Controllers
                 return Json(new { ok = false });
             }
 
-            var formas_pagamento = await service.FindByIdAsync(id.Value);
+            var pecas = await service.FindByIdAsync(id.Value);
 
-            if (formas_pagamento == null)
+            if (pecas == null)
             {
                 return Json(new { ok = false });
             }
@@ -125,6 +143,12 @@ namespace ControleCar.Controllers
             };
             return View(viewModel);
         }
+
+
+
+
+
+
 
 
 
