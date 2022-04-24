@@ -9,8 +9,12 @@ namespace ControleCar.Models.ViewModels
         public List<vendedor> vendedores { get; set; } = new List<vendedor>() { };
         
 
-        public List<cliente> clientes { get; set; } = new List<cliente>() { };  
+        public List<cliente> clientes { get; set; } = new List<cliente>() { };
 
+        public List<pecas> pecas { get; set; } = new List<pecas>() { };
+
+
+        public List<formas_pagamento> formas_pagamentos { get; set; } = new List<formas_pagamento>() { };
 
 
 

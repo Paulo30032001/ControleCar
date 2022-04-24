@@ -18,11 +18,18 @@ namespace ControleCar.Controllers
         private readonly clienteService clienteService;
 
 
-        public vendasController(vendasService service, vendedorService vendedorService, clienteService clienteService)
+        private readonly pecasService pecaService;
+
+
+        private readonly formas_pagamentoService forma_pagService;
+
+        public vendasController(vendasService service, vendedorService vendedorService, clienteService clienteService, pecasService pecaService, formas_pagamentoService forma_pagService)
         {
             this.service = service;
             this.vendedorService= vendedorService;
             this.clienteService= clienteService;
+            this.pecaService= pecaService;
+            this.forma_pagService = forma_pagService;
         }
 
 
@@ -40,7 +47,16 @@ namespace ControleCar.Controllers
         {
             var vendedores = await vendedorService.FindAllAsync();
             var clientes = await clienteService.FindAllAsync();
-            var ViewModels = new vendasFormViewModel() { vendedores = vendedores, clientes = clientes };
+            var pecas = await pecaService.FindAllAsync();   
+            var formas_pagamento = await forma_pagService.FindAllAsync();   
+
+            var ViewModels = new vendasFormViewModel()
+            { vendedores = vendedores,
+                clientes = clientes,
+                 pecas=pecas,
+                 formas_pagamentos=formas_pagamento
+            
+            };
 
 
             return View(ViewModels);
@@ -52,7 +68,20 @@ namespace ControleCar.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                var vendedores = await vendedorService.FindAllAsync();
+                var clientes = await clienteService.FindAllAsync();
+                var pecas = await pecaService.FindAllAsync();
+                var formas_pagamento = await forma_pagService.FindAllAsync();
+
+                var ViewModels = new vendasFormViewModel()
+                {
+                    vendedores = vendedores,
+                    clientes = clientes,
+                    pecas = pecas,
+                    formas_pagamentos = formas_pagamento
+
+                };
+                return View(ViewModels);
             }
             await service.InsertAsync(vendas);
             return RedirectToAction(nameof(index));
@@ -71,7 +100,24 @@ namespace ControleCar.Controllers
             {
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
-            return View(vendas);
+            var vendedores = await vendedorService.FindAllAsync();
+            var clientes = await clienteService.FindAllAsync();
+            var pecas = await pecaService.FindAllAsync();
+            var formas_pagamento = await forma_pagService.FindAllAsync();
+
+            var ViewModels = new vendasFormViewModel()
+            {
+                vendedores = vendedores,
+                clientes = clientes,
+                pecas = pecas,
+                formas_pagamentos = formas_pagamento,
+                vendas=vendas
+
+            };
+
+
+
+            return View(ViewModels);
         }
 
 
@@ -82,7 +128,24 @@ namespace ControleCar.Controllers
             if (!ModelState.IsValid)
             {
                 var x = await service.FindByIdAsync(id);
-                return View(x);
+                var vendedores = await vendedorService.FindAllAsync();
+                var clientes = await clienteService.FindAllAsync();
+                var pecas = await pecaService.FindAllAsync();
+                var formas_pagamento = await forma_pagService.FindAllAsync();
+
+                var ViewModels = new vendasFormViewModel()
+                {
+                    vendedores = vendedores,
+                    clientes = clientes,
+                    pecas = pecas,
+                    formas_pagamentos = formas_pagamento,
+                    vendas = x
+
+                };
+
+
+
+                return View(ViewModels);
             }
             if (id != vendas.id)
             {

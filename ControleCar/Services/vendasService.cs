@@ -17,7 +17,8 @@ namespace ControleCar.Services
 
         public async Task<List<vendas>> FindAllAsync()
         {
-            return await _context.vendas.Include(x=>x.vendedor).Include(x=>x.cliente).ToListAsync();
+            return await _context.vendas.Include(x=>x.vendedor).Include(x=>x.cliente).Include(x=>x.pecas).
+                Include(x=>x.formas_pagamento).ToListAsync();
         }
 
         public async Task InsertAsync(vendas vendas)

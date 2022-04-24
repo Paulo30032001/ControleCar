@@ -14,6 +14,7 @@ builder.Services.AddScoped<formas_pagamentoService>();
 builder.Services.AddScoped<pecas_departamentosService>();
 builder.Services.AddScoped<vendedorService>();
 builder.Services.AddScoped<pecasService>();
+builder.Services.AddScoped<vendasService>();
 
 var app = builder.Build();
 

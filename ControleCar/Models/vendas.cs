@@ -25,11 +25,13 @@ namespace ControleCar.Models
         public int id_peca { get; set; }
         [ForeignKey("id_forma_pag")]
 
-        public formas_pagamento formas_pagamento { get; set; }
+        public formas_pagamento? formas_pagamento { get; set; }
 
         public int id_forma_pag { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+     
+        [DataType(DataType.Date)]
         public DateTime? data { get; set; }
 
 
