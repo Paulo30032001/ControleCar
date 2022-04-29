@@ -34,11 +34,11 @@ namespace ControleCar.Controllers
                 if (usuario != null)
                 {
 
-                    if (usuario.email==login.email && usuario.senha==login.senha)
+                    if (usuario.email==login.email && usuario.senha==login.senha && usuario.ativo)
                     {
                         HttpContext.Session.SetInt32("USR_ID", usuario.id);
                         HttpContext.Session.SetString("USR_EMAIL", usuario.email);
-
+                        HttpContext.Session.SetInt32(("USR_ATIVO"),usuario.ativo?1:0);
                         return RedirectToAction("index", "Home");  
 
                     }

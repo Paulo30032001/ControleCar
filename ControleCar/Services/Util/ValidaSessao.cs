@@ -14,6 +14,10 @@ namespace ControleCar.Services.Util
             {
                 return false;
             }
+            if (httpContext.Session.GetInt32("USR_ATIVO") != 1)
+            {
+                return false;
+            }
             return true;
 
         }

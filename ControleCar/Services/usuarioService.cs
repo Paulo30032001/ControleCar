@@ -48,6 +48,12 @@ namespace ControleCar.Services
             return await _context.usuario.FirstOrDefaultAsync(x => x.id == id);
         }
 
+        public async Task<usuario> FindByIdAsyncAsNoTracking(int id)
+        {
+            return await _context.usuario.AsNoTracking().FirstOrDefaultAsync(x => x.id == id);
+        }
+
+
 
         public async Task UpdateAsync(usuario usuario)
         {

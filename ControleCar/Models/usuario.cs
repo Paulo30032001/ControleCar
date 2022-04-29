@@ -9,7 +9,7 @@ namespace ControleCar.Models
         [Display(Name = "E-mail")]
         public string email { get; set; }
         [Display(Name = "Senha")]
-        public string senha { get; set; }
+        public string? senha { get; set; }
         [Display(Name = "Ativo")]
         public bool ativo { get; set; }
         [Display(Name = "Nome")]

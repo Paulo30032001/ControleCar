@@ -27,6 +27,7 @@ namespace ControleCar.Controllers
             {
                 return false;
             }
+            
             return true;
 
         }
@@ -95,7 +96,7 @@ namespace ControleCar.Controllers
         {
             if (usuario.senha == null)
             {
-                var x = await service.FindByIdAsync(usuario.id);
+                var x = await service.FindByIdAsyncAsNoTracking(usuario.id);
                 usuario.senha = x.senha;
             }
             else
@@ -105,7 +106,7 @@ namespace ControleCar.Controllers
 
             if (!ModelState.IsValid)
             {
-                var x = await service.FindByIdAsync(id);
+                var x = await service.FindByIdAsyncAsNoTracking(id);
                 return View(x);
             }
             if (id != usuario.id)
