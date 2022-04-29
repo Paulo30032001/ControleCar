@@ -5,26 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 namespace ControleCar.Services
 {
-    public class clienteService
+    public class usuarioService
     {
+
         private readonly ControleCarContext _context;
 
-        public clienteService(ControleCarContext _context)
+        public usuarioService(ControleCarContext _context)
         {
             this._context = _context;
         }
 
-        public async Task<List<cliente>> FindAllAsync()
+        public async Task<List<usuario>> FindAllAsync()
         {
-            return await _context.cliente.ToListAsync();
+            return await _context.usuario.ToListAsync();
         }
 
-        
 
-        public async Task InsertAsync(cliente cliente)
+
+        public async Task InsertAsync(usuario usuario)
         {
-            _context.cliente.Add(cliente);
-            await _context.SaveChangesAsync();  
+            _context.usuario.Add(usuario);
+            await _context.SaveChangesAsync();
         }
 
 
@@ -32,8 +33,8 @@ namespace ControleCar.Services
         {
             try
             {
-                var cliente = await _context.cliente.FindAsync(id);
-                _context.Remove(cliente);
+                var usuario = await _context.usuario.FindAsync(id);
+                _context.Remove(usuario);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException e)
@@ -42,21 +43,21 @@ namespace ControleCar.Services
             }
         }
 
-        public async Task<cliente> FindByIdAsync(int id)
+        public async Task<usuario> FindByIdAsync(int id)
         {
-            return await _context.cliente.FirstOrDefaultAsync(x => x.id == id);
+            return await _context.usuario.FirstOrDefaultAsync(x => x.id == id);
         }
 
 
-        public async Task UpdateAsync(cliente cliente)
+        public async Task UpdateAsync(usuario usuario)
         {
-            if (!await _context.cliente.AnyAsync(x => x.id == cliente.id))
+            if (!await _context.usuario.AnyAsync(x => x.id == usuario.id))
             {
                 throw new Exception("Identificador  Não  encontrado");
             }
             try
             {
-                _context.Update(cliente);
+                _context.Update(usuario);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException e)
@@ -65,6 +66,7 @@ namespace ControleCar.Services
             }
 
         }
+
 
 
 

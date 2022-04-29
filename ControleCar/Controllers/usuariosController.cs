@@ -1,105 +1,132 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ControleCar.Data;
+using System.Collections.Generic;
+using ControleCar.Services;
 using ControleCar.Models;
-
+using System.Diagnostics;
+using ControleCar.Services.Util;
+using Microsoft.AspNetCore.Http;
 namespace ControleCar.Controllers
 {
     public class usuariosController : Controller
     {
-        private readonly ControleCarContext _context;
+        private usuarioService service { get; set; }
 
-        public usuariosController(ControleCarContext context)
+        public usuariosController(usuarioService service)
         {
-            _context = context;
+            this.service = service;
         }
 
-        // GET: usuarios
+        public  bool Validar()
+        {
+            if (HttpContext.Session.GetInt32("USR_ID") == null)
+            {
+                return false;
+            }
+            if (!HttpContext.Session.GetString("USR_EMAIL").Equals("paulo.eleison@gmail.com"))
+            {
+                return false;
+            }
+            return true;
+
+        }
+
+
         public async Task<IActionResult> index()
         {
-            return View(await _context.usuario.ToListAsync());
+            if (!Validar())
+            {
+                return RedirectToAction("index", "Login");
+            }
+            var usuario = await service.FindAllAsync();
+
+            return View(usuario);
         }
 
- 
 
-        // GET: usuarios/Create
-        public IActionResult create()
+        public async Task<IActionResult> create()
         {
+            if (!Validar())
+            {
+                return RedirectToAction("index", "Login");
+            }
             return View();
         }
 
-        // POST: usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> create([Bind("id,email,senha,ativo,nome")] usuario usuario)
+        public async Task<IActionResult> create(usuario usuario)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View();
             }
-            return View(usuario);
+
+            usuario.senha = Criptografia.sha1(usuario.senha);
+            await service.InsertAsync(usuario);
+            return RedirectToAction(nameof(index));
         }
 
-        // GET: usuarios/Edit/5
+
         public async Task<IActionResult> edit(int? id)
         {
+            if (!Validar())
+            {
+                return RedirectToAction("index", "Login");
+            }
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
 
-            var usuario = await _context.usuario.FindAsync(id);
+            var usuario = await service.FindByIdAsync(id.Value);
             if (usuario == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
             }
+            usuario.senha = null;
             return View(usuario);
         }
 
-        // POST: usuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> edit(int id, [Bind("id,email,senha,ativo,nome")] usuario usuario)
+        public async Task<IActionResult> edit(int id, usuario usuario)
         {
-            if (id != usuario.id)
+            if (usuario.senha == null)
             {
-                return NotFound();
+                var x = await service.FindByIdAsync(usuario.id);
+                usuario.senha = x.senha;
+            }
+            else
+            {
+                usuario.senha = Criptografia.sha1(usuario.senha);
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await _context.usuario.AnyAsync(x => x.id == usuario.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                var x = await service.FindByIdAsync(id);
+                return View(x);
             }
-            return View(usuario);
+            if (id != usuario.id)
+            {
+                return RedirectToAction(nameof(Error), new { Message = "o Id forncecido não é valido" });
+            }
+            try
+            {
+                await service.UpdateAsync(usuario);
+                return RedirectToAction(nameof(index));
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Error), new { Message = e.Message });
+            }
+
         }
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> delete(int? id)
@@ -109,7 +136,8 @@ namespace ControleCar.Controllers
                 return Json(new { ok = false });
             }
 
-            var usuario = await _context.usuario.FirstOrDefaultAsync(x => x.id == id);
+            var usuario = await service.FindByIdAsync(id.Value);
+
             if (usuario == null)
             {
                 return Json(new { ok = false });
@@ -117,17 +145,32 @@ namespace ControleCar.Controllers
 
             try
             {
-                _context.Remove(usuario);
-                await _context.SaveChangesAsync();
+                await service.RemoveAsync(id.Value);
                 return Json(new { ok = true });
-
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (Exception e)
             {
                 return Json(new { ok = false, Message = e.Message });
             }
 
         }
+
+
+        public async Task<IActionResult> Error(string message)
+        {
+            if (!Validar())
+            {
+                return RedirectToAction("index", "Login");
+            }
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
+        }
+
+
 
     }
 }

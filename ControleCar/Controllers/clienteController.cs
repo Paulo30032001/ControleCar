@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ControleCar.Services;
 using ControleCar.Models;
 using System.Diagnostics;
-
+using ControleCar.Services.Util;
 namespace ControleCar.Controllers
 {
     public class clienteController : Controller
@@ -20,7 +20,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> index()
         {
-
+            if(!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             var clientes = await service.FindAllAsync();
 
             return View(clientes);
@@ -29,6 +32,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> create()
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             return View();
         }
 
@@ -47,6 +54,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> edit(int? id)
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
@@ -120,6 +131,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> Error(string message)
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             var viewModel = new ErrorViewModel
             {
                 Message = message,

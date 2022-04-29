@@ -21,9 +21,13 @@ namespace ControleCar.Services
                 Include(x=>x.formas_pagamento).ToListAsync();
         }
 
+      
+
+
+
         public async Task InsertAsync(vendas vendas)
         {
-            _context.vendas.Add(vendas);
+            _context.Add(vendas);
             await _context.SaveChangesAsync();
         }
 
@@ -66,6 +70,8 @@ namespace ControleCar.Services
 
         }
 
+
+       
 
 
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using ControleCar.Models.ViewModels;
-
+using ControleCar.Services.Util;
 namespace ControleCar.Controllers
 {
     public class vendasController : Controller
@@ -26,9 +26,9 @@ namespace ControleCar.Controllers
         public vendasController(vendasService service, vendedorService vendedorService, clienteService clienteService, pecasService pecaService, formas_pagamentoService forma_pagService)
         {
             this.service = service;
-            this.vendedorService= vendedorService;
-            this.clienteService= clienteService;
-            this.pecaService= pecaService;
+            this.vendedorService = vendedorService;
+            this.clienteService = clienteService;
+            this.pecaService = pecaService;
             this.forma_pagService = forma_pagService;
         }
 
@@ -36,6 +36,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> index()
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
 
             var vendas = await service.FindAllAsync();
 
@@ -45,17 +49,21 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> create()
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             var vendedores = await vendedorService.FindAllAsync();
             var clientes = await clienteService.FindAllAsync();
-            var pecas = await pecaService.FindAllAsync();   
-            var formas_pagamento = await forma_pagService.FindAllAsync();   
+            var pecas = await pecaService.FindAllAsync();
+            var formas_pagamento = await forma_pagService.FindAllAsync();
 
             var ViewModels = new vendasFormViewModel()
             { vendedores = vendedores,
                 clientes = clientes,
-                 pecas=pecas,
-                 formas_pagamentos=formas_pagamento
-            
+                pecas = pecas,
+                formas_pagamentos = formas_pagamento
+
             };
 
 
@@ -90,6 +98,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> edit(int? id)
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
@@ -111,7 +123,7 @@ namespace ControleCar.Controllers
                 clientes = clientes,
                 pecas = pecas,
                 formas_pagamentos = formas_pagamento,
-                vendas=vendas
+                vendas = vendas
 
             };
 
@@ -195,8 +207,23 @@ namespace ControleCar.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> pegar_dados(int peca)
+            {
+               var pecax = await pecaService.FindByIdAsync(peca);
+            return Json(pecax);
+
+            }
+
+     
+
+
         public async Task<IActionResult> Error(string message)
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             var viewModel = new ErrorViewModel
             {
                 Message = message,

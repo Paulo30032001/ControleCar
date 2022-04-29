@@ -16,12 +16,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="pecas.valor" class="control-label"></label>
-                <input required  type="number" asp-for="pecas.valor" class="form-control" />
+                <input required  data-mask="#.##0,00" data-mask-reverse="true"
+                placeholder="0,00"asp-for="pecas.valor" class="form-control" />
 
             </div>
 
              <div class="form-group">
-                <label asp-for="pecas.valor" class="control-label"></label>
+                <label asp-for="pecas.pecas_departamentos" class="control-label"></label>
                <select required asp-for="pecas.id_departamento" asp-items="@(new SelectList(Model.departamentos,"id","nome"))"
                class="form-select">
            <option value="">Selecione...</option>

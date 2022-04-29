@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using ControleCar.Models.ViewModels;
+using ControleCar.Services.Util;
 namespace ControleCar.Controllers
 {
     public class pecasController : Controller
@@ -21,7 +22,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> index()
         {
-
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             var pecas = await service.FindAllAsync();
 
             return View(pecas);
@@ -30,6 +34,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> create()
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             var departamentos = await departamentos_service.FindAllAsync();
 
             var ViewModels= new pecasFormViewModel() { departamentos=departamentos };
@@ -55,6 +63,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> edit(int? id)
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { Message = "Pagina não Encontrada" });
@@ -136,6 +148,10 @@ namespace ControleCar.Controllers
 
         public async Task<IActionResult> Error(string message)
         {
+            if (!ValidaSessao.Validar(HttpContext))
+            {
+                return RedirectToAction("index", "Login");
+            }
             var viewModel = new ErrorViewModel
             {
                 Message = message,

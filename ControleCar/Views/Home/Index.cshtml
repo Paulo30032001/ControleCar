@@ -19,9 +19,19 @@
 								<div class="col-md-6 text-center ">
 									<select id="competencia" class="form-select w-50 text-right">
 										<option value="">-- Selecione </option>
-										<option value="2018-08">Agosto / 2018</option>
-										<option value="2018-09">Setembro / 2018</option>
-										<option value="2018-10">Outubro / 2018</option>
+										<option value="2022-01">Janeiro / 2022</option>
+										<option value="2022-02">Fevereiro / 2022</option>
+										<option value="2022-03">Março / 2022</option>
+										<option value="2022-04">Abril / 2022</option>
+										<option value="2022-05">Maio / 2022</option>
+										<option value="2022-06">Junho / 2022</option>
+										<option value="2022-07">Julho / 2022</option>
+										
+										<option value="2022-08">Agosto / 2022</option>
+										<option value="2022-09">Setembro / 2022</option>
+										<option value="2022-10">Outubro / 2022</option>
+										<option value="2022-11">Novembro / 2022</option>
+										<option value="2022-12">Dezembro / 2022</option>
 									</select>
 								</div>
 							</div>
@@ -39,7 +49,7 @@
 								Número de vendas
 							</div>
 							<div class="card-body">
-								 <h5 id="numeroVendas" class="card-title">?</h5>
+								 <h5 id="numero_vendas" class="card-title">?</h5>
 							</div>
 						</div>
 					</div>
@@ -50,7 +60,7 @@
 								Total de vendas
 							</div>
 							<div class="card-body">
-								 <h5 id="totalVendas" class="card-title">?</h5>
+								 <h5 id="total" data-mask="#.##0,00" data-mask-reverse="true" class="card-title">?</h5>
 							</div>
 						</div>
 		    		</div>
@@ -61,10 +71,10 @@
 					<div class="col-md-6">
 		    			<div class="card bg-success text-white">
 							<div class="card-header">
-								Clientes ativos
+								Usuarios ativos
 							</div>
 							<div class="card-body">
-								 <h5 id="clientes_ativos" class="card-title">?</h5>
+								 <h5 id="ativos" class="card-title">?</h5>
 							</div>
 						</div>
 					</div>
@@ -72,10 +82,10 @@
 					<div class="col-md-6 ">
 		    			<div class="card bg-danger text-white">
 							<div class="card-header">
-								Clientes inativos
+								Usuarios inativos
 							</div>
 							<div class="card-body">
-								 <h5 id="clientes_inativos" class="card-title">?</h5>
+								 <h5 id="inativos" class="card-title">?</h5>
 							</div>
 						</div>
 		    		</div>
@@ -92,3 +102,56 @@
 
 		</div>
 
+
+		@section scripts{
+
+			<script>
+
+				$(document).ready(()=>{
+
+					$("#competencia").on('change',()=>{
+						var data_teste = $("#competencia").val();
+						alert(data_teste);
+				
+						 $.ajax({
+                 type:'POST',
+                  url: '@Url.Action("pegar_dados")',
+                  dataType:"json",
+				  data:{
+					  "data" : data_teste
+				  },
+                  success:(dados)=>{
+                      console.log(dados);
+                        $("#ativos").html(dados.usuarios_ativos);
+						 $("#inativos").html(dados.usuarios_inativos);
+						  $("#numero_vendas").html(dados.numero_vendas);
+						  var x= dados.total_vendas.toString().replace(".",",");
+						  $('#total').html(x);
+
+                  },
+                  error:(dados)=>{
+                        console.log("Error:");
+                      console.log(dados)
+
+                  }
+             });
+						
+					})
+				})
+
+
+
+
+
+
+			</script>
+
+
+
+
+
+
+
+
+
+		}

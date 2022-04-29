@@ -41,7 +41,7 @@
 
                <div class="form-group">
                 <label asp-for="vendas.pecas" class="control-label"></label>
-               <select required asp-for="vendas.id_peca" asp-items="@(new SelectList(Model.pecas,"id","nome"))"
+               <select id="peca" required asp-for="vendas.id_peca" asp-items="@(new SelectList(Model.pecas,"id","nome"))"
                class="form-select">
            <option value="">Selecione...</option>
            
@@ -60,6 +60,22 @@
             </div>
 
 
+             
+               <div class="form-group">
+                <label asp-for="vendas.quantidade" class="control-label"></label>
+                 <input required id="quantidade" type="number" asp-for="vendas.quantidade" class="form-control" >
+
+            </div>
+
+                     <div class="form-group">
+                <label asp-for="vendas.valor" class="control-label"></label>
+                 <input required id="valor"  asp-for="vendas.valor" data-mask="#.##0,00" data-mask-reverse="true"
+               placeholder="0,00" class="form-control" >
+
+            </div>
+
+
+
 
             <div class="form-group">
                 <input type="hidden" asp-for="vendas.id" >
@@ -76,3 +92,64 @@
 
 
 
+
+
+
+
+@section scripts{
+
+    <script>
+        
+        $(document).ready(()=>{
+            var valor=0;
+            $("#peca").on('change',()=>{
+               var peca = $("#peca").val();
+               alert(peca);
+               			 $.ajax({
+                 type:'POST',
+                  url: '@Url.Action("pegar_dados")',
+                  dataType:"json",
+				  data:{
+					  "peca" : peca 
+				  },
+                  success:(dados)=>{
+                      console.log(dados);
+                       valor= dados.valor;
+
+                  },
+                  error:(dados)=>{
+                        console.log("Error:");
+                      console.log(dados)
+
+                  }
+             });
+            }) // fecha evento de peca
+
+           $('#quantidade').on('blur',()=>{
+               var quantidade =  $('#quantidade').val();
+               
+               if(quantidade!=0 && quantidade !=null && valor!=0){
+                   var result = quantidade*valor;
+                   
+                     var x= result.toString().replace(".",",");
+                   alert('x=' + x);
+                   var result= x;
+              
+
+                    
+                     $('#valor').val(result);
+               }
+           })
+
+
+         
+
+        }) // fecha document ready
+
+
+
+
+    </script>
+
+
+}

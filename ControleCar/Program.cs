@@ -15,7 +15,17 @@ builder.Services.AddScoped<pecas_departamentosService>();
 builder.Services.AddScoped<vendedorService>();
 builder.Services.AddScoped<pecasService>();
 builder.Services.AddScoped<vendasService>();
+builder.Services.AddScoped<homeService>();
+builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<usuarioService>();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10); //TEMPO QUE O USUARIO VAI FICAR LOGADO NO SISTEMA
+                options.Cookie.HttpOnly = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,7 +38,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
